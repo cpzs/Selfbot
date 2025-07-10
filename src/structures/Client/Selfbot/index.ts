@@ -35,12 +35,6 @@ export class SelfbotClient {
     try {
       const channelId = '1393007186602496082';
       const channel = this.mainClient.getChannel(channelId);
-      
-      if (!channel) {
-        console.error(`Channel with ID ${channelId} not found`);
-        return;
-      }
-
       await channel.createMessage({
         embeds: [{
           color: 0x000,
