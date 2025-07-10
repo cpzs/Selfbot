@@ -30,6 +30,7 @@ export class Velish extends Client {
     this.eventHandler = new EventHandler(this);
     this.commandHandler = new CommandHandler(this);
     this.selfbot = new SelfbotClient();
+    this.selfbot.setMainClient(this);
   }
 
   async start(): Promise<void> {
