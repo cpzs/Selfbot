@@ -1,10 +1,6 @@
-import {
-  ApplicationCommandTypes,
-  CommandInteraction,
-  CreateApplicationCommandOptions,
-} from "oceanic.js";
-import { Velish } from "../../structures/client";
-import { Command } from "../../types/command";
+import { ApplicationCommandTypes, CommandInteraction } from "oceanic.js";
+import { Velish } from "@/structures/client";
+import { Command } from "@/types/command";
 
 export default class PingCommand implements Command {
   client: Velish;

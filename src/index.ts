@@ -1,4 +1,4 @@
-import { Velish } from "./structures/client/index";
+import { Velish } from "@/structures/client/index";
 import colors from "colors";
 
 colors.enable();

@@ -1,6 +1,6 @@
 import { CommandInteraction, PermissionName } from "oceanic.js";
 import type { ApplicationCommandOptions } from "oceanic.js";
-import { Velish } from "../structures/client";
+import { Velish } from "@/structures/client";
 
 export interface Command {
   client: Velish;

@@ -1,5 +1,5 @@
-import { DataTypes, Sequelize } from 'sequelize';
-import { Vel, DatabaseManager } from '../index';
+import { DataTypes, Sequelize } from "sequelize";
+import { Vel, DatabaseManager } from "@/structures/database/index";
 
 interface KickLimitAttributes {
   guildId: string;
@@ -22,7 +22,7 @@ export class KickLimit extends Vel {
   declare createdAt?: Date;
   declare updatedAt?: Date;
 
-  constructor(values: KickLimitCreationAttributes = { guildId: '' }) {
+  constructor(values: KickLimitCreationAttributes = { guildId: "" }) {
     super();
     this.guildId = values.guildId;
     this.limit = values.limit || 3;
@@ -34,31 +34,34 @@ export class KickLimit extends Vel {
       guildId: {
         type: DataTypes.STRING,
         allowNull: false,
-        unique: true
+        unique: true,
       },
       limit: {
         type: DataTypes.INTEGER,
         allowNull: false,
-        defaultValue: 3
+        defaultValue: 3,
       },
       timeWindow: {
         type: DataTypes.INTEGER,
         allowNull: false,
-        defaultValue: 60000
-      }
+        defaultValue: 60000,
+      },
     });
   }
 
-  static async getGuildLimit(database: DatabaseManager, guildId: string): Promise<any> {
-    let limit = await database.findOne('KickLimit', {
-      where: { guildId }
+  static async getGuildLimit(
+    database: DatabaseManager,
+    guildId: string
+  ): Promise<any> {
+    let limit = await database.findOne("KickLimit", {
+      where: { guildId },
     });
 
     if (!limit) {
-      limit = await database.create('KickLimit', {
+      limit = await database.create("KickLimit", {
         guildId,
         limit: 3,
-        timeWindow: 60000
+        timeWindow: 60000,
       });
     }
 
@@ -66,31 +69,35 @@ export class KickLimit extends Vel {
   }
 
   static async updateGuildLimit(
-    database: DatabaseManager, 
-    guildId: string, 
-    limit: number, 
+    database: DatabaseManager,
+    guildId: string,
+    limit: number,
     timeWindow: number
   ): Promise<any> {
-    const existingLimit = await database.findOne('KickLimit', {
-      where: { guildId }
+    const existingLimit = await database.findOne("KickLimit", {
+      where: { guildId },
     });
 
     if (existingLimit) {
-      await database.update('KickLimit', {
-        limit,
-        timeWindow
-      }, {
-        guildId
-      });
+      await database.update(
+        "KickLimit",
+        {
+          limit,
+          timeWindow,
+        },
+        {
+          guildId,
+        }
+      );
 
-      return await database.findOne('KickLimit', {
-        where: { guildId }
+      return await database.findOne("KickLimit", {
+        where: { guildId },
       });
     } else {
-      return await database.create('KickLimit', {
+      return await database.create("KickLimit", {
         guildId,
         limit,
-        timeWindow
+        timeWindow,
       });
     }
   }

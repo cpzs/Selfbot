@@ -1,5 +1,5 @@
-import { Velish } from "../../structures/client";
-import { Event } from "../../types/event";
+import { Velish } from "@/structures/client";
+import { Event } from "@/types/event";
 
 export default class ReadyEvent implements Event<"ready"> {
   client: Velish;

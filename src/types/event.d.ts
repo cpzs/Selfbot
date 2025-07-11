@@ -1,5 +1,5 @@
 import { ClientEvents } from "oceanic.js";
-import { Velish } from "../structures/client";
+import { Velish } from "@/structures/client";
 
 export interface Event<K extends keyof ClientEvents = any> {
   client: Velish;

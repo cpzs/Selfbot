@@ -1,10 +1,10 @@
 import { Client } from "oceanic.js";
-import { EventHandler } from "../handlers/event";
-import { CommandHandler } from "../handlers/command";
-import config from "../../config";
-import { DatabaseManager } from "../database";
-import { Command } from "../../types/command";
-import { SelfbotClient } from "./bot";
+import { EventHandler } from "@/structures/handlers/event";
+import { CommandHandler } from "@/structures/handlers/command";
+import config from "@/config";
+import { DatabaseManager } from "@/structures/database";
+import { Command } from "@/types/command";
+import { SelfbotClient } from "@/structures/client/bot";
 
 export class Velish extends Client {
   public commands: Map<string, Command>;

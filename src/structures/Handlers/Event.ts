@@ -1,7 +1,7 @@
 import fs from "fs/promises";
 import path from "path";
-import { Velish } from "../client";
-import { Event } from "../../types/event";
+import { Velish } from "@/structures/client";
+import { Event } from "@/types/event";
 
 export class EventHandler {
   private client: Velish;

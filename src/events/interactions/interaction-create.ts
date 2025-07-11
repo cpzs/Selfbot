@@ -1,7 +1,7 @@
 import colors from "colors";
 import { CommandInteraction, Interaction } from "oceanic.js";
-import { Velish } from "../../structures/client";
-import { Event } from "../../types/event";
+import { Velish } from "@/structures/client";
+import { Event } from "@/types/event";
 
 export default class InteractionCreateEvent
   implements Event<"interactionCreate">

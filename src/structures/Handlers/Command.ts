@@ -1,7 +1,7 @@
 import fs from "fs/promises";
 import path from "path";
-import { Velish } from "../client";
-import { Command } from "../../types/command";
+import { Velish } from "@/structures/client";
+import { Command } from "@/types/command";
 
 export class CommandHandler {
   private client: Velish;
