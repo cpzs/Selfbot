@@ -1,7 +1,7 @@
 import fs from "fs/promises";
 import path from "path";
-import { Velish } from "../Client";
-import { Command } from "../../types/Command";
+import { Velish } from "../client";
+import { Command } from "../../types/command";
 
 export class CommandHandler {
   private client: Velish;
@@ -16,7 +16,7 @@ export class CommandHandler {
     for (const file of commandFiles) {
       if (!file.endsWith(".ts")) continue;
       const CommandClass = require(file)?.default || require(file);
-      if (typeof CommandClass !== 'function') {
+      if (typeof CommandClass !== "function") {
         console.warn(`⚠️ ${file}`);
         continue;
       }
@@ -37,7 +37,10 @@ export class CommandHandler {
     }
   }
 
-  async getAllFiles(dirPath: string, arrayOfFiles: string[] = []): Promise<string[]> {
+  async getAllFiles(
+    dirPath: string,
+    arrayOfFiles: string[] = []
+  ): Promise<string[]> {
     const files = await fs.readdir(dirPath);
 
     for (const file of files) {

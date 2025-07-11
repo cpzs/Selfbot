@@ -1,10 +1,10 @@
 import { Client } from "oceanic.js";
-import { EventHandler } from "../Handlers/Event";
-import { CommandHandler } from "../Handlers/Command";
+import { EventHandler } from "../handlers/event";
+import { CommandHandler } from "../handlers/command";
 import config from "../../config";
-import { DatabaseManager } from "../Database";
-import { Command } from "../../types/Command";
-import { SelfbotClient } from "./Selfbot";
+import { DatabaseManager } from "../database";
+import { Command } from "../../types/command";
+import { SelfbotClient } from "./bot";
 
 export class Velish extends Client {
   public commands: Map<string, Command>;
@@ -19,8 +19,8 @@ export class Velish extends Client {
     super({
       auth: `Bot ${config.token}`,
       gateway: {
-        intents: config.intents
-      }
+        intents: config.intents,
+      },
     });
 
     this.commands = new Map();
@@ -36,11 +36,11 @@ export class Velish extends Client {
   async start(): Promise<void> {
     try {
       await this.database.init();
-      console.log('DB co');
+      console.log("DB co");
       await this.eventHandler.loadEvents();
       await this.commandHandler.loadCommands();
       await this.connect();
-      
+
       try {
         await this.selfbot.start();
       } catch (selfbotError) {

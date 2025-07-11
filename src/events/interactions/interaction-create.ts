@@ -1,16 +1,18 @@
-import colors from 'colors';
-import { CommandInteraction, Interaction } from 'oceanic.js';
-import { Velish } from '../../structures/Client';
-import { Event } from '../../types/Event';
+import colors from "colors";
+import { CommandInteraction, Interaction } from "oceanic.js";
+import { Velish } from "../../structures/client";
+import { Event } from "../../types/Event";
 
-export default class InteractionCreateEvent implements Event<'interactionCreate'> {
+export default class InteractionCreateEvent
+  implements Event<"interactionCreate">
+{
   client: Velish;
 
   constructor(client: Velish) {
     this.client = client;
   }
 
-  get name(): 'interactionCreate' {
+  get name(): "interactionCreate" {
     return "interactionCreate";
   }
 
@@ -22,19 +24,22 @@ export default class InteractionCreateEvent implements Event<'interactionCreate'
     console.log(`Commande utilisée => ${interaction.data.name}`.yellow);
 
     try {
-      void await command.execute(interaction as CommandInteraction, this.client);
+      void (await command.execute(
+        interaction as CommandInteraction,
+        this.client
+      ));
     } catch (error) {
       console.error(`❌ Erreur => ${interaction.data.name}:`.red, error);
       const errorMessage = {
         content: "Erreur avec la commande",
-        flags: 64 as any
+        flags: 64 as any,
       };
 
       try {
         if (interaction.acknowledged) {
-          void await interaction.createFollowup(errorMessage);
+          void (await interaction.createFollowup(errorMessage));
         } else {
-          void await interaction.createMessage(errorMessage);
+          void (await interaction.createMessage(errorMessage));
         }
       } catch (responseError: any) {
         if (responseError.code === 10062) {
