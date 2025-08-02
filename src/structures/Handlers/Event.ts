@@ -1,7 +1,7 @@
 import fs from "fs/promises";
 import path from "path";
-import { Velish } from "../Client";
-import { Event } from "../../types/Event";
+import { Velish } from "@/structures/client";
+import { Event } from "@/types/event";
 
 export class EventHandler {
   private client: Velish;
@@ -16,7 +16,7 @@ export class EventHandler {
     for (const file of eventFiles) {
       if (!file.endsWith(".ts")) continue;
       const EventClass = require(file)?.default || require(file);
-      if (typeof EventClass !== 'function') {
+      if (typeof EventClass !== "function") {
         console.warn(`⚠️ ${file}`);
         continue;
       }
@@ -28,15 +28,24 @@ export class EventHandler {
       }
 
       if (event.once) {
-        void this.client.once(event.name, (...args) => void event.execute(...args));
+        void this.client.once(
+          event.name,
+          (...args) => void event.execute(...args)
+        );
       } else {
-        void this.client.on(event.name, (...args) => void event.execute(...args));
+        void this.client.on(
+          event.name,
+          (...args) => void event.execute(...args)
+        );
       }
       console.log(`🟢 ${event.name}`);
     }
   }
 
-  async getAllFiles(dirPath: string, arrayOfFiles: string[] = []): Promise<string[]> {
+  async getAllFiles(
+    dirPath: string,
+    arrayOfFiles: string[] = []
+  ): Promise<string[]> {
     const files = await fs.readdir(dirPath);
 
     for (const file of files) {

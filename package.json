@@ -3,10 +3,11 @@
   "version": "1.0.0",
   "description": "OceanicWS",
   "main": "dist/index.js",
+  "type": "module",
   "scripts": {
-    "start": "node dist/index.js",
+    "start": "bun dist/index.js",
     "build": "tsc",
-    "dev": "ts-node src/index.ts",
+    "dev": "bun src/index.ts",
     "watch": "tsc -w"
   },
   "dependencies": {

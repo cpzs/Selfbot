@@ -1,5 +1,5 @@
-import { Velish } from "./structures/Client/index";
-import colors from 'colors';
+import { Velish } from "@/structures/client/index";
+import colors from "colors";
 
 colors.enable();
 const client = new Velish();

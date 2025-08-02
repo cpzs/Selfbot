@@ -1,7 +1,13 @@
-import { Model, ModelStatic, Sequelize, Transaction, WhereOptions } from 'sequelize';
-import path from 'path';
-import fs from 'fs';
-import config from '../../config';
+import {
+  Model,
+  ModelStatic,
+  Sequelize,
+  Transaction,
+  WhereOptions,
+} from "sequelize";
+import path from "path";
+import fs from "fs";
+import config from "@/config";
 
 interface VelAttributes {
   createdAt?: Date;
@@ -15,7 +21,7 @@ export class Vel extends Model<VelAttributes> {
       sequelize,
       timestamps: true,
       underscored: true,
-      modelName: this.name
+      modelName: this.name,
     });
   }
 
@@ -41,7 +47,7 @@ export class DatabaseManager {
   constructor(client: any) {
     this.client = client;
     this.models = new Map();
-    
+
     this.sequelize = new Sequelize({
       dialect: config.database.dialect,
       storage: config.database.storage,
@@ -51,8 +57,8 @@ export class DatabaseManager {
         max: 5,
         min: 0,
         acquire: 30000,
-        idle: 10000
-      }
+        idle: 10000,
+      },
     });
   }
 
@@ -69,22 +75,26 @@ export class DatabaseManager {
 
   async loadModels(): Promise<void> {
     try {
-      const modelsPath = path.join(__dirname, 'models');
-      const modelFiles = fs.readdirSync(modelsPath)
-        .filter(file => file.endsWith('.js') || file.endsWith('.ts'));
+      const modelsPath = path.join(__dirname, "models");
+      const modelFiles = fs
+        .readdirSync(modelsPath)
+        .filter((file) => file.endsWith(".js") || file.endsWith(".ts"));
 
       for (const file of modelFiles) {
         const modelPath = path.join(modelsPath, file);
         const ModelClass = require(modelPath);
-        
-        if (typeof ModelClass === 'function' && ModelClass.prototype instanceof Vel) {
+
+        if (
+          typeof ModelClass === "function" &&
+          ModelClass.prototype instanceof Vel
+        ) {
           const model = ModelClass.initialize(this.sequelize);
           this.models.set(ModelClass.name, model);
         }
       }
 
       for (const [, model] of this.models) {
-        if (typeof (model as any).associate === 'function') {
+        if (typeof (model as any).associate === "function") {
           (model as any).associate(this.models);
         }
       }
@@ -128,18 +138,22 @@ export class DatabaseManager {
     }
   }
 
-  async update(modelName: string, data: any, where: WhereOptions): Promise<[number, any[]]> {
+  async update(
+    modelName: string,
+    data: any,
+    where: WhereOptions
+  ): Promise<[number, any[]]> {
     try {
       const Model = this.getModel(modelName);
-      const result = await Model.update(data, { 
+      const result = await Model.update(data, {
         where,
-        individualHooks: true
+        individualHooks: true,
       });
-      
+
       if (result[0] !== 0) {
         await Model.findOne({ where });
       }
-      
+
       return [result[0], []];
     } catch (error) {
       throw error;
@@ -155,25 +169,30 @@ export class DatabaseManager {
     }
   }
 
-  async findOrCreate(modelName: string, options: FindOrCreateOptions): Promise<[any, boolean]> {
+  async findOrCreate(
+    modelName: string,
+    options: FindOrCreateOptions
+  ): Promise<[any, boolean]> {
     try {
       const Model = this.getModel(modelName);
-      
+
       if (!options?.where) {
-        throw new Error(`findOrCreate: options.where est requis pour ${modelName}`);
+        throw new Error(
+          `findOrCreate: options.where est requis pour ${modelName}`
+        );
       }
-      
+
       const findOptions: any = {
         where: options.where,
-        defaults: options.defaults || {}
+        defaults: options.defaults || {},
       };
-      
+
       if (options.transaction) {
         findOptions.transaction = options.transaction;
       }
-      
+
       const result = await Model.findOrCreate(findOptions);
-      
+
       return result;
     } catch (error) {
       throw error;
@@ -194,7 +213,7 @@ export class DatabaseManager {
 
   async isTableEmpty(modelName: string): Promise<boolean> {
     try {
-      return await this.getModel(modelName).count() === 0;
+      return (await this.getModel(modelName).count()) === 0;
     } catch (error) {
       throw error;
     }
@@ -203,7 +222,7 @@ export class DatabaseManager {
   async truncateTable(modelName: string): Promise<void> {
     try {
       await this.getModel(modelName).destroy({
-        truncate: true
+        truncate: true,
       });
     } catch (error) {
       throw error;
@@ -230,7 +249,7 @@ export class DatabaseManager {
     try {
       if (this.sequelize && this.models) {
         for (const [, model] of this.models) {
-          if (model && typeof model === 'object') {
+          if (model && typeof model === "object") {
             if ((model as any).Instance && (model as any).Instance._cache) {
               (model as any).Instance._cache.clear();
             }
